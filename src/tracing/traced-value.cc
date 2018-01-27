@@ -75,7 +75,11 @@ TracedValue::~TracedValue() {
 void TracedValue::SetInteger(const char* name, int value) {
   DCHECK_CURRENT_CONTAINER_IS(kStackTypeDict);
   WriteName(name);
+#if V8_OS_EBBRT
+  data_ += "REDACTED"; 
+#else
   data_ += std::to_string(value);
+#endif  // USE_SIGNALS
 }
 
 void TracedValue::SetDouble(const char* name, double value) {
@@ -116,7 +120,11 @@ void TracedValue::BeginArray(const char* name) {
 void TracedValue::AppendInteger(int value) {
   DCHECK_CURRENT_CONTAINER_IS(kStackTypeArray);
   WriteComma();
+#if V8_OS_EBBRT
+  data_ += "REDACTED"; 
+#else
   data_ += std::to_string(value);
+#endif
 }
 
 void TracedValue::AppendDouble(double value) {

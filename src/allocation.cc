@@ -11,7 +11,7 @@
 #include "src/utils.h"
 #include "src/v8.h"
 
-#if V8_LIBC_BIONIC
+#if V8_LIBC_BIONIC || V8_OS_EBBRT 
 #include <malloc.h>  // NOLINT
 #endif
 
@@ -57,7 +57,7 @@ void* AlignedAlloc(size_t size, size_t alignment) {
   void* ptr;
 #if V8_OS_WIN
   ptr = _aligned_malloc(size, alignment);
-#elif V8_LIBC_BIONIC
+#elif V8_LIBC_BIONIC || V8_OS_EBBRT 
   // posix_memalign is not exposed in some Android versions, so we fall back to
   // memalign. See http://code.google.com/p/android/issues/detail?id=35391.
   ptr = memalign(alignment, size);

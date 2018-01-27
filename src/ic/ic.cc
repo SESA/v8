@@ -165,7 +165,11 @@ void IC::TraceIC(const char* type, Handle<Object> name, State old_state,
   if (map != nullptr) {
     ic_info.is_dictionary_map = map->is_dictionary_map();
     ic_info.number_of_own_descriptors = map->NumberOfOwnDescriptors();
+#if V8_OS_EBBRT
+    ic_info.instance_type = "REDACTED";//std::to_string(map->instance_type());
+#else
     ic_info.instance_type = std::to_string(map->instance_type());
+#endif
   }
   // TODO(lpy) Add name as key field in ICStats.
   ICStats::instance()->End();

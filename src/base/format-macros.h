@@ -88,6 +88,10 @@
 #define WidePRIu64 L"I64u"
 #define WidePRIx64 L"I64x"
 
+#if defined(V8_OS_EBBRT)
+#define PRIuS "lu"
+#endif
+
 #if !defined(PRIuS)
 #define PRIuS "Iu"
 #endif

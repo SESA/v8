@@ -42,6 +42,8 @@ void CallOnceImpl(OnceType* once, PointerArgFunction init_func, void* arg) {
     while (state == ONCE_STATE_EXECUTING_FUNCTION) {
 #ifdef _WIN32
       ::Sleep(0);
+#elif defined(__ebbrt__)
+      // Do Nothing 
 #else
       sched_yield();
 #endif

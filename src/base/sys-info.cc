@@ -16,6 +16,9 @@
 #include <sys/sysctl.h>
 #endif
 
+#if V8_OS_EBBRT
+#include <ebbrt/Cpu.h>
+#endif
 #include <limits>
 
 #include "src/base/logging.h"
@@ -47,6 +50,8 @@ int SysInfo::NumberOfProcessors() {
   SYSTEM_INFO system_info = {};
   ::GetNativeSystemInfo(&system_info);
   return static_cast<int>(system_info.dwNumberOfProcessors);
+#elif V8_OS_EBBRT
+  return static_cast<int>(ebbrt::Cpu::Count());
 #endif
 }
 
@@ -95,6 +100,8 @@ int64_t SysInfo::AmountOfPhysicalMemory() {
     return 0;
   }
   return static_cast<int64_t>(pages) * page_size;
+#elif V8_OS_EBBRT
+  return 0; 
 #endif
 }
 
@@ -110,6 +117,8 @@ int64_t SysInfo::AmountOfVirtualMemory() {
     return 0;
   }
   return (rlim.rlim_cur == RLIM_INFINITY) ? 0 : rlim.rlim_cur;
+#elif V8_OS_EBBRT
+  return 0;
 #endif
 }
 
