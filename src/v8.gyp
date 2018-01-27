@@ -383,13 +383,13 @@
         '<(DEPTH)',
         '<(SHARED_INTERMEDIATE_DIR)'
       ],
-      'actions':[{
-        'action_name': 'run mkpeephole',
-        'inputs': ['<(mkpeephole_exec)'],
-        'outputs': ['<(INTERMEDIATE_DIR)/bytecode-peephole-table.cc'],
-        'action': ['<(mkpeephole_exec)', '<(INTERMEDIATE_DIR)/bytecode-peephole-table.cc' ],
-        'process_outputs_as_sources': 1,
-      }],
+#      'actions':[{
+#        'action_name': 'run mkpeephole',
+#        'inputs': ['<(mkpeephole_exec)'],
+#        'outputs': ['<(INTERMEDIATE_DIR)/bytecode-peephole-table.cc'],
+#        'action': ['<(mkpeephole_exec)', '<(INTERMEDIATE_DIR)/bytecode-peephole-table.cc' ],
+#        'process_outputs_as_sources': 1,
+#      }],
       'sources': [  ### gcmole(all) ###
         '../include/v8-debug.h',
         '../include/v8-experimental.h',
@@ -1356,11 +1356,11 @@
         }, {
           'toolsets': ['target'],
         }],
-        ['want_separate_host_toolset_mkpeephole==1', {
-          'dependencies': ['mkpeephole#host'],
-        }, {
-          'dependencies': ['mkpeephole'],
-        }],
+#        ['want_separate_host_toolset_mkpeephole==1', {
+#          'dependencies': ['mkpeephole#host'],
+#        }, {
+#          'dependencies': ['mkpeephole'],
+#        }],
         ['v8_target_arch=="arm"', {
           'sources': [  ### gcmole(arch:arm) ###
             'arm/assembler-arm-inl.h',
@@ -2051,6 +2051,12 @@
             ],
           }
         ],
+        ['OS=="ebbrt"', {
+          'sources': [
+            'base/debug/stack_trace_ebbrt.cc',
+            'base/platform/platform-ebbrt.cc',
+          ]},
+        ],
         ['OS=="mac"', {
           'sources': [
             'base/debug/stack_trace_posix.cc',
@@ -2481,30 +2487,6 @@
           ]
         }],
         ['want_separate_host_toolset==1', {
-          'toolsets': ['host'],
-        }, {
-          'toolsets': ['target'],
-        }],
-      ],
-    },
-    {
-      'target_name': 'mkpeephole',
-      'type': 'executable',
-      'dependencies': [ 'v8_libbase' ],
-      'include_dirs+': [
-        '..',
-       ],
-      'sources': [
-        'interpreter/bytecode-operands.h',
-        'interpreter/bytecode-operands.cc',
-        'interpreter/bytecode-peephole-table.h',
-        'interpreter/bytecode-traits.h',
-        'interpreter/bytecodes.h',
-        'interpreter/bytecodes.cc',
-        'interpreter/mkpeephole.cc'
-      ],
-      'conditions': [
-        ['want_separate_host_toolset_mkpeephole==1', {
           'toolsets': ['host'],
         }, {
           'toolsets': ['target'],

@@ -336,6 +336,8 @@ class Sampler::PlatformData {
  private:
   HANDLE profiled_thread_;
 };
+#elif V8_OS_EBBRT
+class Sampler::PlatformData {};
 #endif  // USE_SIGNALS
 
 

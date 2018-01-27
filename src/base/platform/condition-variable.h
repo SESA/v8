@@ -62,7 +62,7 @@ class V8_BASE_EXPORT ConditionVariable final {
   // The implementation-defined native handle type.
 #if V8_OS_POSIX
   typedef pthread_cond_t NativeHandle;
-#elif V8_OS_WIN
+#elif V8_OS_WIN || V8_OS_EBBRT
   struct Event;
   class NativeHandle final {
    public:

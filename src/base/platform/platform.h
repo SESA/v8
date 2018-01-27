@@ -33,6 +33,10 @@
 
 #if V8_OS_QNX
 #include "src/base/qnx-math.h"
+#elif V8_OS_EBBRT
+#include <stdio.h> // FILE 
+#include <malloc.h> // memalign 
+#include <boost/lexical_cast.hpp>
 #endif
 
 namespace v8 {

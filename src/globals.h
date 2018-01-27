@@ -182,6 +182,9 @@ const size_t kCodeRangeAreaAlignment = 256 * MB;
 #elif V8_HOST_ARCH_PPC && V8_TARGET_ARCH_PPC && V8_OS_LINUX
 const size_t kMaximalCodeRangeSize = 512 * MB;
 const size_t kCodeRangeAreaAlignment = 64 * KB;  // OS page on PPC Linux
+#elif V8_OS_EBBRT
+const size_t kMaximalCodeRangeSize = 128 * MB;
+const size_t kCodeRangeAreaAlignment = 4 * KB;  // OS page.
 #else
 const size_t kMaximalCodeRangeSize = 512 * MB;
 const size_t kCodeRangeAreaAlignment = 4 * KB;  // OS page.

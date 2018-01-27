@@ -1090,7 +1090,7 @@
           'V8_ANDROID_LOG_STDOUT',
         ],
       }],
-      ['OS=="linux" or OS=="freebsd" or OS=="openbsd" or OS=="solaris" \
+      ['OS=="linux" or OS=="ebbrt" or OS=="freebsd" or OS=="openbsd" or OS=="solaris" \
          or OS=="netbsd" or OS=="qnx" or OS=="aix"', {
         'conditions': [
           [ 'v8_no_strict_aliasing==1', {
@@ -1106,6 +1106,10 @@
       }],
       ['OS=="netbsd"', {
         'cflags': [ '-I/usr/pkg/include' ],
+      }],
+      ['OS=="ebbrt"', {
+        'defines': ['_LIBCPP_HAS_NO_THREADS=1'],
+        'cflags': [ '-std=c++14'],
       }],
       ['OS=="aix"', {
         'defines': [

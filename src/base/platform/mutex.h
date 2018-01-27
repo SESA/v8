@@ -58,6 +58,10 @@ class V8_BASE_EXPORT Mutex final {
   typedef pthread_mutex_t NativeHandle;
 #elif V8_OS_WIN
   typedef CRITICAL_SECTION NativeHandle;
+#elif V8_OS_EBBRT
+  typedef void* NativeHandle; 
+#else 
+#error FUCK
 #endif
 
   NativeHandle& native_handle() {

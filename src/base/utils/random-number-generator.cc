@@ -12,6 +12,9 @@
 #include "src/base/macros.h"
 #include "src/base/platform/mutex.h"
 #include "src/base/platform/time.h"
+#if V8_OS_EBBRT
+#include <ebbrt/native/Random.h>
+#endif
 
 namespace v8 {
 namespace base {
@@ -48,6 +51,11 @@ RandomNumberGenerator::RandomNumberGenerator() {
   DCHECK_EQ(0, result);
   result = rand_s(&second_half);
   DCHECK_EQ(0, result);
+  SetSeed((static_cast<int64_t>(first_half) << 32) + second_half);
+#elif V8_OS_EBBRT
+  unsigned first_half, second_half;
+  first_half = ebbrt::random::Get();
+  second_half = ebbrt::random::Get();
   SetSeed((static_cast<int64_t>(first_half) << 32) + second_half);
 #else
   // Gather entropy from /dev/urandom if available.

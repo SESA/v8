@@ -5,6 +5,9 @@
 #ifndef V8CONFIG_H_
 #define V8CONFIG_H_
 
+#if defined(__ebbrt__)
+# undef __linux__ 
+#endif
 // clang-format off
 
 // Platform headers for feature detection below.
@@ -70,6 +73,7 @@
 //  V8_OS_SOLARIS       - Sun Solaris and OpenSolaris
 //  V8_OS_AIX           - AIX
 //  V8_OS_WIN           - Microsoft Windows
+//  V8_OS_EBBRT         - EbbRT 
 
 #if defined(__ANDROID__)
 # define V8_OS_ANDROID 1
@@ -112,6 +116,9 @@
 # define V8_OS_QNX 1
 #elif defined(_WIN32)
 # define V8_OS_WIN 1
+#elif defined(__ebbrt__)
+# define V8_OS_EBBRT 1
+# define V8_LIBC_BIONIC 1 // memalign not pthread_memalign
 #endif
 
 

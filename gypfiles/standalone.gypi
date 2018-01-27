@@ -819,6 +819,44 @@
     }],
     # 'OS=="linux" or OS=="freebsd" or OS=="openbsd" or OS=="solaris"
     #  or OS=="netbsd"'
+    ['OS=="ebbrt"', {
+      'target_defaults': {
+        'cflags': [
+          '-Wall', '-O3', '-m64',
+          '<(werror)',
+        ],
+        'cflags_cc': [
+          '-std=gnu++14',
+        ],
+        'conditions': [
+          # Don't warn about TRACE_EVENT_* macros with zero arguments passed to
+          # ##__VA_ARGS__. C99 strict mode prohibits having zero variadic macro
+          # arguments in gcc.
+          [ 'clang==0', {
+            'cflags!' : [
+              '-pedantic' ,
+              # Don't warn about unrecognized command line option.
+              '-Wno-gnu-zero-variadic-macro-arguments',
+            ],
+            'cflags' : [
+              # Disable gcc warnings for optimizations based on the assumption
+              # that signed overflow does not occur. Generates false positives
+              # (see http://crbug.com/v8/6341).
+              "-Wno-strict-overflow",
+              # Don't rely on strict aliasing; v8 does weird pointer casts all
+              # over the place.
+              '-fno-strict-aliasing',
+            ],
+          }, {
+            'cflags' : [
+              # TODO(hans): https://crbug.com/767059
+              '-Wno-tautological-constant-compare',
+            ],
+          }],
+        ],
+      },
+    }],
+    #  OS=="ebbrt"'
     ['OS=="qnx"', {
       'target_defaults': {
         'cflags': [
@@ -1319,6 +1357,15 @@
         ['RANLIB.host', '<(host_ranlib)'],
         ['CC.host', '<(host_cc)'],
         ['CXX.host', '<(host_cxx)'],
+      ],
+    }],
+    ['OS=="ebbrt" and clang==0', {
+      # Hardcode the compiler names in the Makefile so that
+      # it won't depend on the environment at make time.
+      'make_global_settings': [
+        ['CXX.host', '<!(which x86_64-pc-ebbrt-g++)'],
+        ['CC.host', '<!(which x86_64-pc-ebbrt-gcc)'],
+        ['AR.host', '<!(which x86_64-pc-ebbrt-ar)'],
       ],
     }],
     ['clang!=1 and host_clang==1 and target_arch!="ia32" and target_arch!="x64"', {
